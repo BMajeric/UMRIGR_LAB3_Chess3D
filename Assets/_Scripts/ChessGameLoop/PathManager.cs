@@ -85,6 +85,7 @@ namespace ChessMainLoop
 
         private static bool CreatePath(Piece caller, int startRow, int startColumn, int newRow, int newColumn)
         {
+            bool isEnemyInPath = false;
             if (!BoardState.Instance.IsInBorders(newRow, newColumn)) return false;
             SideColor checkSide = BoardState.Instance.SimulateCheckState(startRow, startColumn, newRow, newColumn);
 
@@ -103,6 +104,7 @@ namespace ChessMainLoop
                 // Ako je na polju protivnicka figura, iscrtavaj crveno
                 path = ObjectPool.Instance.GetHighlightPath(PathPieceType.PathRed);
                 path.GetComponent<PathPiece>().AssignPiece(piece);
+                isEnemyInPath = true;
             }
             else return false;
 
@@ -115,7 +117,7 @@ namespace ChessMainLoop
             position.y = path.transform.localPosition.y;
 
             path.transform.localPosition = position;
-            return true;
+            return !isEnemyInPath;
         }
 
         public static void CreatePassantSpot(Piece target, int row, int column)
