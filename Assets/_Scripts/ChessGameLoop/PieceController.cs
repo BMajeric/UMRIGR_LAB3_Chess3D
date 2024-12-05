@@ -86,7 +86,23 @@ namespace ChessMainLoop
              * Figuru je potrebno pomaknuti pozivom metode AnimationManager instance. 
              * Nakon što završi pomicanje figure potrebno je zamijeniti koja je strana na potezu.
              */
-            yield return null;
+            Vector3 targetPosition = new Vector3(newRow * BoardState.Offset, 0, newColumn * BoardState.Offset);
+
+            _activePiece.Move(newRow, newColumn);
+            AnimationManager.Instance.MovePiece(_activePiece, targetPosition, assignedEnemy);
+            while (AnimationManager.Instance.IsActive == true)
+            {
+                yield return null;
+            }
+
+            SideColor checkedSide = BoardState.Instance.SimulateCheckState(oldRow, oldColumn, newRow, newColumn);
+
+            GameManager.Instance.CheckedSide = checkedSide;
+            GameManager.Instance.Passantable = null;
+
+            _activePiece = null;
+            GameManager.Instance.IsPieceMoving = false;
+            GameManager.Instance.ChangeTurn();
         }
 
         private IEnumerator PieceMoverCastle(int callerRow, int callerColumn, int castleRow, int castleColumn)

@@ -46,6 +46,23 @@ namespace ChessMainLoop
             /*
              * Potrebno je metodu nadopuniti logikom za mijenjanje strane poteza, ažiriranje broja poteza te provjeru je li igra potencijalno gotova.
              */
+            _turnPlayer = _turnPlayer == SideColor.White ? SideColor.Black : SideColor.White;
+            _turnCount += 1;
+
+            SideColor _winner = BoardState.Instance.CheckIfGameOver();
+            if (_winner != SideColor.None)
+            {
+                if (_turnPlayer == SideColor.White)
+                {
+                    _winner = SideColor.Black;
+                }
+                else if (_turnPlayer == SideColor.Black)
+                {
+                    _winner = SideColor.White;
+                }
+
+                GameEnd(_winner);
+            }
         }
 
         public void GameEnd(SideColor winner)

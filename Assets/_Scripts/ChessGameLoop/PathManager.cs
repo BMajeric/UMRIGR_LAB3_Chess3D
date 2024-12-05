@@ -45,7 +45,7 @@ namespace ChessMainLoop
              *      - iteriraj kroz lookup table
              *      - za svaki smjer pozivaj CreatePathInSpotDirection dok se moze
              */
-            Debug.Log(lookupTable.Length);
+            //Debug.Log(lookupTable.Length);
             int startRow;
             int startColumn;
             int newRow;
@@ -55,12 +55,12 @@ namespace ChessMainLoop
             {
                 startRow = caller.Location.Row;
                 startColumn = caller.Location.Column;
-                Debug.Log(lookupTable[i, 0].ToString() + lookupTable[i, 1].ToString());
+                //Debug.Log(lookupTable[i, 0].ToString() + lookupTable[i, 1].ToString());
                 do
                 {
                     newRow = startRow + lookupTable[i, 0];
                     newColumn = startColumn + lookupTable[i, 1];
-                    Debug.Log("ROWS: " + startRow.ToString() + " " + startColumn.ToString() + " " + newRow.ToString() + " " + newColumn.ToString());
+                    //Debug.Log("ROWS: " + startRow.ToString() + " " + startColumn.ToString() + " " + newRow.ToString() + " " + newColumn.ToString());
 
                     isPathAvailable = CreatePath(caller, startRow, startColumn, newRow, newColumn);
 
