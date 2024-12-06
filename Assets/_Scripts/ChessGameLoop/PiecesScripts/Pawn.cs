@@ -11,7 +11,33 @@ namespace ChessMainLoop
              * polja za dijagonalni napad, En passant napad (https://en.wikipedia.org/wiki/En_passant), te polja za kretanje 
              * jedno i dva mijesta prema naprijed.
              */
-            PathManager.CreateDiagonalPath(this);
+            int rowDirection;
+            if (PieceColor == SideColor.White)
+            {
+                rowDirection = -1;
+            }
+            else
+            {
+                rowDirection = 1;
+            }
+
+            if (BoardState.Instance.GetField(_row + rowDirection, _column) == null)
+            {
+                PathManager.CreatePathInSpotDirection(this, rowDirection, 0);
+                if (BoardState.Instance.IsInBorders(_row + 2*rowDirection, _column) 
+                    && BoardState.Instance.GetField(_row + 2*rowDirection, _column) == null
+                    && !HasMoved)
+                {
+                    PathManager.CreatePathInSpotDirection(this, 2 * rowDirection, 0);
+                }
+            }
+
+            CreateAttackSpace(rowDirection, 1);
+            CreateAttackSpace(rowDirection, -1);
+            CreatePassantSpace(rowDirection, 1);
+            CreatePassantSpace(rowDirection, -1);
+
+            //PathManager.CreateDiagonalPath(this);
         }
 
         private void CreateAttackSpace(int rowDirection, int columnDirection)

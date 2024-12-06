@@ -85,6 +85,11 @@ namespace ChessMainLoop
             return check;
         }
 
+        public SideColor CalculateNewGridCheckState()
+        {
+            return CheckStateCalculator.CalculateCheck(_gridState);
+        }
+
         /// <summary>
         /// Mocks the translation of the piece to the target position and check if it would result in check.
         /// </summary>
@@ -95,13 +100,14 @@ namespace ChessMainLoop
              * Potrebno je zamijeniti liniju return SideColor.None logikom koja provjerava čijim stanjem šaha bi 
              * završilo stanje ploče prilikom izvođenja tog poteza.
              */
+            //Debug.Log($"{rowNew}, {columnNew}; {IsInBorders(rowNew, columnNew)}");
             if (!IsInBorders(rowNew, columnNew))
             {
                 return SideColor.None;
             }
 
-            Piece movingPiece = GetField(rowOld, columnOld);
-            Piece targetPiece = GetField(rowNew, columnNew);
+            Piece movingPiece = Instance.GetField(rowOld, columnOld);
+            Piece targetPiece = Instance.GetField(rowNew, columnNew);
 
             //Debug.Log($"Start piece {movingPiece}; new piece {targetPiece}");
             ClearField(rowOld, columnOld);
@@ -110,7 +116,15 @@ namespace ChessMainLoop
             SideColor checkState = CheckStateCalculator.CalculateCheck(_gridState);
 
             SetField(movingPiece, rowOld, columnOld);
-            SetField(targetPiece, rowNew, columnNew);
+            
+            if (targetPiece)
+            {
+                SetField(targetPiece, rowNew, columnNew);
+            } 
+            else
+            {
+                ClearField(rowNew, columnNew);
+            }
 
             return checkState;
         }

@@ -7,6 +7,8 @@ namespace ChessMainLoop
             /*
              * Nadopunite kod za stvaranje objekata za odabir polja koji prati logiku figure kraljice.
              */
+            PathManager.CreateDiagonalPath(this);
+            PathManager.CreateVerticalPath(this);
         }
 
         public override bool IsAttackingKing(int row, int column)
@@ -14,7 +16,8 @@ namespace ChessMainLoop
             /*
              * Zamijenite liniju return false; sa kodom za provjeru napada li kraljica kralja sa trenutnog polja.
             */
-            return false;
+            return CheckStateCalculator.IsAttackingKingDiagonal(row, column, PieceColor) 
+                || CheckStateCalculator.IsAttackingKingVertical(row, column, PieceColor);
         }
 
         public override bool CanMove(int row, int column)
@@ -22,7 +25,8 @@ namespace ChessMainLoop
             /*
              * Zamijenite liniju return false; sa kodom za provjeru ima li kraljica preostalih dopuštenih poteza.
             */
-            return false;
+            return GameEndCalculator.CanMoveDiagonal(row, column, PieceColor)
+                || GameEndCalculator.CanMoveVertical(row, column, PieceColor);
         }
     }
 }

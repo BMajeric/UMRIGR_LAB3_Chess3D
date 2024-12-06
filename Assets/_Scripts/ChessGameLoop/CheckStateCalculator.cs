@@ -76,17 +76,24 @@ namespace ChessMainLoop
             {
                 newRow = row;
                 newColumn = column;
+                piece = null;
+                UnityEngine.Debug.Log("-----------------------------------------------------");
                 // Prodi po svim poljima dok ne naides na figuru
-                do
+                while (piece == null && BoardState.Instance.IsInBorders(newRow + directionLookupTable[i, 0], newColumn + directionLookupTable[i, 1]))
                 {
-                    piece = BoardState.Instance.GetField(newRow, newColumn);
                     newRow += directionLookupTable[i, 0];
-                    newColumn += directionLookupTable[i, 0];
+                    newColumn += directionLookupTable[i, 1];
+                    piece = BoardState.Instance.GetField(newRow, newColumn);
+                    //UnityEngine.Debug.Log($"CHECK - {piece}");
                 }
-                while (piece == null && piece.PieceColor != attackerColor && BoardState.Instance.IsInBorders(newRow, newColumn));
 
+                newRow -= directionLookupTable[i, 0];
+                newColumn -= directionLookupTable[i, 1];
+
+                UnityEngine.Debug.Log($"CHECK - {piece}: {newRow}, {newColumn}");
                 if (BoardState.Instance.IsInBorders(newRow, newColumn) && piece != null)
                 {
+                    UnityEngine.Debug.Log(IsEnemyKingAtLocation(newRow, newColumn, directionLookupTable[i, 0], directionLookupTable[i, 1], attackerColor));
                     return IsEnemyKingAtLocation(newRow, newColumn, directionLookupTable[i, 0], directionLookupTable[i, 1], attackerColor);
                 }
             }

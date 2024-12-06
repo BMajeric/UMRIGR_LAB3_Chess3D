@@ -88,15 +88,16 @@ namespace ChessMainLoop
              */
             Vector3 targetPosition = new Vector3(newRow * BoardState.Offset, 0, newColumn * BoardState.Offset);
 
+            //Debug.Log("ROWS: " + oldRow.ToString() + " " + oldColumn.ToString() + " " + newRow.ToString() + " " + newColumn.ToString());
+            //SideColor checkedSide = BoardState.Instance.SimulateCheckState(oldRow, oldColumn, newRow, newColumn);
+
             _activePiece.Move(newRow, newColumn);
             AnimationManager.Instance.MovePiece(_activePiece, targetPosition, assignedEnemy);
             while (AnimationManager.Instance.IsActive == true)
             {
                 yield return null;
             }
-
-            SideColor checkedSide = BoardState.Instance.SimulateCheckState(oldRow, oldColumn, newRow, newColumn);
-
+            SideColor checkedSide = BoardState.Instance.CalculateNewGridCheckState();
             GameManager.Instance.CheckedSide = checkedSide;
             GameManager.Instance.Passantable = null;
 

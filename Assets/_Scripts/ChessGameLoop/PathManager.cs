@@ -46,26 +46,26 @@ namespace ChessMainLoop
              *      - za svaki smjer pozivaj CreatePathInSpotDirection dok se moze
              */
             //Debug.Log(lookupTable.Length);
-            int startRow;
-            int startColumn;
+            int startRow = caller.Location.Row;
+            int startColumn = caller.Location.Column;
             int newRow;
             int newColumn;
             bool isPathAvailable;
             for (int i = 0; i < lookupTable.Length / 2; i++)
             {
-                startRow = caller.Location.Row;
-                startColumn = caller.Location.Column;
+                newRow = startRow;
+                newColumn = startColumn;
                 //Debug.Log(lookupTable[i, 0].ToString() + lookupTable[i, 1].ToString());
                 do
                 {
-                    newRow = startRow + lookupTable[i, 0];
-                    newColumn = startColumn + lookupTable[i, 1];
+                    newRow += lookupTable[i, 0];
+                    newColumn += lookupTable[i, 1];
                     //Debug.Log("ROWS: " + startRow.ToString() + " " + startColumn.ToString() + " " + newRow.ToString() + " " + newColumn.ToString());
 
                     isPathAvailable = CreatePath(caller, startRow, startColumn, newRow, newColumn);
 
-                    startRow = newRow;
-                    startColumn = newColumn;
+                    //startRow = newRow;
+                    //startColumn = newColumn;
                 } while (isPathAvailable);
             }
         }
@@ -88,7 +88,7 @@ namespace ChessMainLoop
             bool isEnemyInPath = false;
             if (!BoardState.Instance.IsInBorders(newRow, newColumn)) return false;
             SideColor checkSide = BoardState.Instance.SimulateCheckState(startRow, startColumn, newRow, newColumn);
-
+            Debug.Log($"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -> {checkSide}");
             // Ako micanje ove figure rezultira sahom za mene, nemoj iscrtavati
             if (checkSide == caller.PieceColor || checkSide == SideColor.Both) return false;
 
