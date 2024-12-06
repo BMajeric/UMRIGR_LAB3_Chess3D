@@ -41,18 +41,18 @@ namespace ChessMainLoop
                 if (_poolDictionary[pathPieceType].Count > 0)
                 {
                     // Uzima iz poola
-                    Debug.Log("TU SU");
+                    //Debug.Log("TU SU");
                     paths[i] = _poolDictionary[pathPieceType].Dequeue();
                     paths[i].SetActive(true);
                 }
                 else
                 {
                     // Kreira nove
-                    Debug.Log("NEMA IH");
+                    //Debug.Log("NEMA IH");
                     paths[i]= Instantiate(_prefabs.Where(piece => piece.PathPieceType == pathPieceType)
                         .SingleOrDefault().gameObject, transform.parent);
                 }
-                Debug.Log("PATHS: " + paths[i]);
+                //Debug.Log("PATHS: " + paths[i]);
             }
             return paths;
         }

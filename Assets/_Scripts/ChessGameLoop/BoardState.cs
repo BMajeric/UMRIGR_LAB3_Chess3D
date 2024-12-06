@@ -95,7 +95,24 @@ namespace ChessMainLoop
              * Potrebno je zamijeniti liniju return SideColor.None logikom koja provjerava čijim stanjem šaha bi 
              * završilo stanje ploče prilikom izvođenja tog poteza.
              */
-            return SideColor.None;
+            if (!IsInBorders(rowNew, columnNew))
+            {
+                return SideColor.None;
+            }
+
+            Piece movingPiece = GetField(rowOld, columnOld);
+            Piece targetPiece = GetField(rowNew, columnNew);
+
+            //Debug.Log($"Start piece {movingPiece}; new piece {targetPiece}");
+            ClearField(rowOld, columnOld);
+            SetField(movingPiece, rowNew, columnNew);
+
+            SideColor checkState = CheckStateCalculator.CalculateCheck(_gridState);
+
+            SetField(movingPiece, rowOld, columnOld);
+            SetField(targetPiece, rowNew, columnNew);
+
+            return checkState;
         }
 
         public SideColor CheckIfGameOver()

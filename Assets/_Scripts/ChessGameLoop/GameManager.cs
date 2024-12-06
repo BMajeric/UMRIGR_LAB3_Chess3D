@@ -71,6 +71,8 @@ namespace ChessMainLoop
              * Potrebno je metodu nadopuniti logikom koja se izvršava prilikom kraja igre. Potrebno je prikazati vizualne elemente za objavu 
              * pobjednika i onemogućiti kretanje kamere.
              */
+            _camera.enabled = false;
+            UIManager.Instance.GameOver(winner);
         }
 
         /// <summary>

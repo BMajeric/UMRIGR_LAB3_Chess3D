@@ -68,6 +68,28 @@ namespace ChessMainLoop
              * Potrebno je zamijeniti liniju return false; logikom za provjeru napadala li figura sa danog polja koordinatama row i column
              * neprijateljskog kralja ovisnom o danom smijeru napada figure koji je definiran directionLookupTable parametrom.
              */
+            // Prodi po svim smjerovima u kojima se figura moze micat
+            Piece piece;
+            int newRow;
+            int newColumn;
+            for (int i = 0; i < directionLookupTable.Length / 2; i++)
+            {
+                newRow = row;
+                newColumn = column;
+                // Prodi po svim poljima dok ne naides na figuru
+                do
+                {
+                    piece = BoardState.Instance.GetField(newRow, newColumn);
+                    newRow += directionLookupTable[i, 0];
+                    newColumn += directionLookupTable[i, 0];
+                }
+                while (piece == null && piece.PieceColor != attackerColor && BoardState.Instance.IsInBorders(newRow, newColumn));
+
+                if (BoardState.Instance.IsInBorders(newRow, newColumn) && piece != null)
+                {
+                    return IsEnemyKingAtLocation(newRow, newColumn, directionLookupTable[i, 0], directionLookupTable[i, 1], attackerColor);
+                }
+            }
             return false;
         }
 
