@@ -125,6 +125,31 @@ namespace ChessReplay
             /*
              * Nadopuniti metodu logikom koja izvodi akciju promocije pijuna u odrabranu figuru definiranu parametrom pieceType.
              */
+            ReplayPiece newPiece = null;
+
+            switch (pieceType)
+            {
+                case ChessPieceType.BlackQueen: newPiece = Instantiate(_blackQueen); break;
+                case ChessPieceType.WhiteQueen: newPiece = Instantiate(_whiteQueen); break;
+                case ChessPieceType.BlackRook: newPiece = Instantiate(_blackRook); break;
+                case ChessPieceType.WhiteRook: newPiece = Instantiate(_whiteRook); break;
+                case ChessPieceType.BlackBishop: newPiece = Instantiate(_blackBishop); break;
+                case ChessPieceType.WhiteBishop: newPiece = Instantiate(_whiteBishop); break;
+                case ChessPieceType.BlackKnight: newPiece = Instantiate(_blackKnight); break;
+                case ChessPieceType.WhiteKnight: newPiece = Instantiate(_whiteKnight); break;
+            }
+
+            if (newPiece != null)
+            {
+                int row = (int)endPosition.x;
+                int col = (int)endPosition.z;
+
+                newPiece.transform.localPosition = new Vector3(row * Offset, pawn.transform.localPosition.y, col * Offset);
+                _gridState[row, col] = newPiece;
+                pawn.gameObject.SetActive(false);
+
+                _promotedOnesDict[turnCount] = new ReplayPiece[] { pawn, newPiece };
+            }
         }
 
         /// <summary>
@@ -136,6 +161,44 @@ namespace ChessReplay
              * Nadopuniti metodu logikom za vraćanje poteza unazad. Također je potrebno vratiti figure koje su potencijalno bile
              * pojedene taj potez ili pijuna koji se pomovirao u novu figuru.
              */
+            int startX = (int)startPosition.x;
+            int startY = (int)startPosition.y;
+            int endX = (int)endPosition.x;
+            int endY = (int)endPosition.y;
+
+            if (_promotedOnesDict.ContainsKey(turnCount))
+            {
+                ReplayPiece[] promotedPieces = _promotedOnesDict[turnCount];
+                ReplayPiece pawn = promotedPieces[0];
+                ReplayPiece promotedPiece = promotedPieces[1];
+
+                _gridState[endX, endY] = pawn;
+                _gridState[startX, startY] = null;
+
+                pawn.gameObject.SetActive(true);
+                promotedPiece.gameObject.SetActive(false);
+
+                _promotedOnesDict.Remove(turnCount);
+                return;
+            }
+
+            if (_killedDict.ContainsKey(turnCount))
+            {
+                ReplayPiece killedPiece = _killedDict[turnCount];
+                _gridState[endX, endY] = killedPiece;
+                killedPiece.gameObject.SetActive(true);
+
+                _killedDict.Remove(turnCount);
+            }
+            else
+            {
+                _gridState[endX, endY] = null;
+            }
+
+            ReplayPiece movedPiece = _gridState[startX, startY];
+            _gridState[startX, startY] = movedPiece;
+            movedPiece.transform.localPosition = new Vector3(startX * Offset, movedPiece.transform.localPosition.y, startY * Offset);
+
         }
     }
 }

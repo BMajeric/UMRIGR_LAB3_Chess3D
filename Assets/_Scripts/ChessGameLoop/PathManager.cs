@@ -88,7 +88,7 @@ namespace ChessMainLoop
             bool isEnemyInPath = false;
             if (!BoardState.Instance.IsInBorders(newRow, newColumn)) return false;
             SideColor checkSide = BoardState.Instance.SimulateCheckState(startRow, startColumn, newRow, newColumn);
-            Debug.Log($"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -> {checkSide}");
+            //Debug.Log($"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA -> {checkSide}");
             // Ako micanje ove figure rezultira sahom za mene, nemoj iscrtavati
             if (checkSide == caller.PieceColor || checkSide == SideColor.Both) return false;
 

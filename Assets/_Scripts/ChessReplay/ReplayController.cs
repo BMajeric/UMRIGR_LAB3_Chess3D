@@ -73,11 +73,15 @@ namespace ChessReplay
         /// </summary>
         public void LastTurn()
         {
+            StopAutoplay();
             if (_turnCount > 0)
             {
                 /*
                  * Nadopuniti metodu logikom koja vraća unazad i izvodi prošli izvedeni potez.
                  */
+                _turnCount--;
+                List<Vector2> lastMove = _moveList[_turnCount];
+                BoardStateReplay.Instance.UndoMove(lastMove[0], lastMove[1], _turnCount);
             }
         }
 
@@ -86,11 +90,15 @@ namespace ChessReplay
         /// </summary>
         public void NextTurn()
         {
+            StopAutoplay();
             if (_turnCount < _moveList.Count)
             {
                 /*
                  * Nadopuniti metodu logikom koja izvodi slijedeći spremljeni potez.
                  */
+                List<Vector2> nextMove = _moveList[_turnCount];
+                BoardStateReplay.Instance.MovePiece(nextMove[0], nextMove[1], _turnCount);
+                _turnCount++;
             }
         }
 

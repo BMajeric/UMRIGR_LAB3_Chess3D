@@ -26,6 +26,7 @@ namespace ChessMainLoop
 
                     if (grid[i, j].PieceColor == turnPlayer && grid[i, j].CanMove(i, j) == true)
                     {
+                        //UnityEngine.Debug.Log(grid[i, j]);
                         return SideColor.None;
                     }
                 }
@@ -33,9 +34,10 @@ namespace ChessMainLoop
 
             if (GameManager.Instance.CheckedSide == turnPlayer)
             {
+                //UnityEngine.Debug.Log(turnPlayer);
                 return turnPlayer == SideColor.Black ? SideColor.White : SideColor.Black;
             }
-
+            //UnityEngine.Debug.Log("NE");
             return SideColor.Both;
         }
 

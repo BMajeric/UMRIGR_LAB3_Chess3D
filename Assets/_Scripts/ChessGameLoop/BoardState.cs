@@ -109,7 +109,7 @@ namespace ChessMainLoop
             Piece movingPiece = Instance.GetField(rowOld, columnOld);
             Piece targetPiece = Instance.GetField(rowNew, columnNew);
 
-            Debug.Log($"Start piece {movingPiece}; new piece {targetPiece}");
+            //Debug.Log($"Start piece {movingPiece}; new piece {targetPiece}");
             ClearField(rowNew, columnNew);
             SetField(movingPiece, rowNew, columnNew);
 
