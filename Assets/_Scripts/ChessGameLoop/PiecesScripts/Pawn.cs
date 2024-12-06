@@ -34,10 +34,6 @@ namespace ChessMainLoop
 
             CreateAttackSpace(rowDirection, 1);
             CreateAttackSpace(rowDirection, -1);
-            CreatePassantSpace(rowDirection, 1);
-            CreatePassantSpace(rowDirection, -1);
-
-            //PathManager.CreateDiagonalPath(this);
         }
 
         private void CreateAttackSpace(int rowDirection, int columnDirection)
